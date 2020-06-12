@@ -6,15 +6,18 @@ class Item:
     def __str__(self):
         return f'{self.name} - {self.description}'
 
+    def on_take(self):
+        print(f'You have picked up a {self.name}')
+
 items = {
-    "Flashlight": Item('Anchor',
+    "flashlight": Item('Flashlight',
                        'The item is used to see in the dark'),
-    "Coin": Item('Coin', 
+    "coin": Item('Coin', 
                         'They are the main currency of my adventure game'),
-    "Rusty Sword": Item('Rusty Sword',
+    "rusty sword": Item('Rusty Sword',
                         'Rusty swords are plentiful but do little damage'),
-    "Shiny Sword": Item('Shiny Sword',
+    "shiny star": Item('Shiny Star',
                         'If the player gets a Star, they will become invincible.'),
-    "Health Kit": Item('Health Kit',
-                        'Used to restore health to 100%')
+    "health": Item('Health',
+                   'Used to restore health to 100%')
 }

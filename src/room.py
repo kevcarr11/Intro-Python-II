@@ -15,7 +15,15 @@ class Room:
     
     def __str__(self):
         print('\n')
-        return f'Current room is {self.name}:\n\n{self.description}'
+        output = f'Current room is {self.name}:\n\n{self.description}\n'
+        if self.e_to:
+            return f'{output} To the east is: {self.e_to.name} \n'
+        elif self.w_to:
+            return f'{output} To the west is: {self.w_to.name} \n'
+        elif self.s_to:
+            return f'{output} To the south is: {self.s_to.name} \n'
+        elif self.n_to:
+            return f'{output} To the north is: {self.n_to.name} \n'
 
     def print_items(self):
         print(self.items)
@@ -23,3 +31,5 @@ class Room:
     def add_items_to_room(self, item):
         self.items.append(item)
 
+    def remove_item_from_room(self, item):
+        self.items.remove(item)
