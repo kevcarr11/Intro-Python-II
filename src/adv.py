@@ -1,5 +1,6 @@
 from room import Room
-
+from player import Player
+from item import items
 # Declare all the rooms
 
 room = {
@@ -33,11 +34,38 @@ room['narrow'].w_to = room['foyer']
 room['narrow'].n_to = room['treasure']
 room['treasure'].s_to = room['narrow']
 
+
 #
 # Main
-#
+
+# items
+rusty_sword = items['rusty sword']
+coin = items['coin']
+flashlight = items['flashlight']
+shiny_sword = items['shiny star']
+health_kit = items['health']
+
+room['outside'].add_items_to_room(rusty_sword)
+room['foyer'].add_items_to_room(flashlight)
+room['overlook'].add_items_to_room(shiny_sword)
+room['narrow'].add_items_to_room(health_kit)
+room['treasure'].add_items_to_room(coin)
+
 
 # Make a new player object that is currently in the 'outside' room.
+
+new_user = input(
+    '  Welcome to my adventure game maze. \n \nPlease enter your name to get started: ')
+user = Player(new_user, room['outside'])
+print(f'Hello {user.name}, do you think you can find the missing treasure?\n')
+print(user.current_room)
+print('\n')
+print('Current items in this room:\n')
+for idx, item in enumerate(user.current_room.items):
+    print(f'{str(idx+1)}. {item}')
+    print('\n')
+    print('\n')
+
 
 # Write a loop that:
 #
@@ -49,3 +77,40 @@ room['treasure'].s_to = room['narrow']
 # Print an error message if the movement isn't allowed.
 #
 # If the user enters "q", quit the game.
+
+while True:
+    choice = input('Please choose your next path or press q to quit: ')
+    cmd = len(choice.split(' '))
+    try:
+        if cmd == 2:
+            verb = choice.split(' ')[0].lower()
+            action = choice.split(' ')[1]
+            if verb == 'get' or verb == 'take':
+                for i in user.current_room.items:
+                    if i.name.lower() == action.lower():
+                        user.items.append(action)
+                        print(user.current_room.items)
+                        items[str(action)].on_take()
+                    else:
+                        print('No such item in this room exist')
+        elif cmd == 1:
+            if (choice == 'q'):
+                break
+            elif choice == 'n' or choice == 's' or choice == 'e' or choice == 'w':
+                if user.move_player(choice) is None:
+                    print('You hit a wall, move not allowed')
+                else:
+                    user.current_room = user.move_player(choice)
+                    print(user.current_room)
+                    print('\n')
+                    print('Items currently in this room:\n')
+                    for idx, item in enumerate(user.current_room.items):
+                        print(f'{str(idx+1)}. {str(item)}')
+                        print('\n')
+                        print('\n')
+            else:
+                print('Please enter a valid direction: n, s, e, w')
+        else:
+            print('Your input was unrecognized')
+    except ValueError:
+        print('Please enter a valid direction')
